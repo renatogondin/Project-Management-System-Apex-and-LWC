@@ -1,7 +1,7 @@
 <template>
     <lightning-card title="Project Manager">
         <div class="slds-p-around_medium">
-            <!-- Project Creation Form -->
+            
             <template if:true={showNewProjectForm}>
                 <div class="slds-box slds-m-bottom_medium">
                     <h2 class="slds-text-heading_medium slds-m-bottom_small">New Project</h2>
@@ -18,7 +18,7 @@
                 </div>
             </template>
             
-            <!-- Project Details -->
+            
             <template if:true={projectData}>
                 <div class="slds-box slds-m-bottom_medium">
                     <div class="slds-grid slds-gutters">
@@ -39,7 +39,7 @@
                         </div>
                     </div>
                     
-                    <!-- Add Milestone Button -->
+                    
                     <div class="slds-m-top_medium">
                         <lightning-button 
                             label="Add Milestone" 
@@ -48,7 +48,7 @@
                         </lightning-button>
                     </div>
                     
-                    <!-- Add Milestone Form -->
+                    
                     <template if:true={showMilestoneForm}>
                         <div class="slds-box slds-m-top_small">
                             <lightning-input 
@@ -71,7 +71,7 @@
                         </div>
                     </template>
                     
-                    <!-- Milestones List -->
+                    
                     <template if:true={hasMilestones}>
                         <div class="slds-m-top_medium">
                             <h3 class="slds-text-heading_small slds-m-bottom_small">Milestones</h3>
@@ -97,7 +97,7 @@
                                         </div>
                                     </div>
                                     
-                                    <!-- Add Todo Button -->
+                                    
                                     <div class="slds-m-top_small">
                                         <lightning-button 
                                             label="Add Todo" 
@@ -107,7 +107,7 @@
                                         </lightning-button>
                                     </div>
                                     
-                                    <!-- Add Todo Form -->
+                                    
                                    
                                         <div class="slds-box slds-m-top_small">
                                             <lightning-input 
@@ -130,7 +130,7 @@
                                         </div>
                                     
                                     
-                                    <!-- Todo Items -->
+                                    
                                     
                                         <div class="slds-m-top_small">
                                             <h4 class="slds-text-heading_small slds-m-bottom_small">To-Do Items</h4>

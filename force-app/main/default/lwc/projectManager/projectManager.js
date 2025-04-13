@@ -108,7 +108,7 @@ export default class ProjectManager extends LightningElement {
     loadProject(projectId) {
         getProject({ projectId })
             .then(result => {
-                // Add hasTodos property to each milestone wrapper
+                
                 if (result.milestones) {
                     result.milestones.forEach(milestoneWrapper => {
                         milestoneWrapper.hasTodos = 
@@ -155,7 +155,7 @@ export default class ProjectManager extends LightningElement {
         this.showTodoForm = true;
         this.newTodo = { name: '' };
         
-        // Update all DOM elements with matching milestone ID
+        
         this.template.querySelectorAll('[data-milestone-id]').forEach(element => {
             const elementMilestoneId = element.dataset.milestoneId;
             if (elementMilestoneId === milestoneId) {
@@ -170,7 +170,7 @@ export default class ProjectManager extends LightningElement {
         this.showTodoForm = false;
         this.activeMilestoneId = null;
         
-        // Reset visibility for all milestone elements
+        
         this.template.querySelectorAll('[data-milestone-id]').forEach(element => {
             element.isTodoFormVisible = false;
         });
