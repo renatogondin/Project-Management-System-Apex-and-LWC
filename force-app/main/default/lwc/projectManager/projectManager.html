@@ -1,0 +1,175 @@
+<template>
+    <lightning-card title="Project Manager">
+        <div class="slds-p-around_medium">
+            <!-- Project Creation Form -->
+            <template if:true={showNewProjectForm}>
+                <div class="slds-box slds-m-bottom_medium">
+                    <h2 class="slds-text-heading_medium slds-m-bottom_small">New Project</h2>
+                    <lightning-input label="Project Name" value={newProject.name} onchange={handleProjectNameChange}></lightning-input>
+                    <lightning-combobox
+                        label="Project Owner"
+                        value={newProject.ownerId}
+                        options={ownerOptions}
+                        onchange={handleOwnerChange}>
+                    </lightning-combobox>
+                    <div class="slds-m-top_medium">
+                        <lightning-button label="Create Project" variant="brand" onclick={createProject}></lightning-button>
+                    </div>
+                </div>
+            </template>
+            
+            <!-- Project Details -->
+            <template if:true={projectData}>
+                <div class="slds-box slds-m-bottom_medium">
+                    <div class="slds-grid slds-gutters">
+                        <div class="slds-col">
+                            <h2 class="slds-text-heading_medium">{projectData.project.Name}</h2>
+                        </div>
+                        <div class="slds-col slds-text-align_right">
+                            <lightning-badge label={projectData.project.Status__c}></lightning-badge>
+                        </div>
+                    </div>
+                    <div class="slds-m-top_small">
+                        <lightning-progress-bar 
+                            value={projectPercentComplete} 
+                            size="large">
+                        </lightning-progress-bar>
+                        <div class="slds-text-align_center slds-m-top_xx-small">
+                            {projectPercentComplete}% Complete
+                        </div>
+                    </div>
+                    
+                    <!-- Add Milestone Button -->
+                    <div class="slds-m-top_medium">
+                        <lightning-button 
+                            label="Add Milestone" 
+                            onclick={showAddMilestoneForm} 
+                            variant="neutral">
+                        </lightning-button>
+                    </div>
+                    
+                    <!-- Add Milestone Form -->
+                    <template if:true={showMilestoneForm}>
+                        <div class="slds-box slds-m-top_small">
+                            <lightning-input 
+                                label="Milestone Name" 
+                                value={newMilestone.name} 
+                                onchange={handleMilestoneNameChange}>
+                            </lightning-input>
+                            <div class="slds-m-top_small">
+                                <lightning-button 
+                                    label="Create Milestone" 
+                                    variant="brand" 
+                                    onclick={createMilestone} 
+                                    class="slds-m-right_small">
+                                </lightning-button>
+                                <lightning-button 
+                                    label="Cancel" 
+                                    onclick={hideAddMilestoneForm}>
+                                </lightning-button>
+                            </div>
+                        </div>
+                    </template>
+                    
+                    <!-- Milestones List -->
+                    <template if:true={hasMilestones}>
+                        <div class="slds-m-top_medium">
+                            <h3 class="slds-text-heading_small slds-m-bottom_small">Milestones</h3>
+                            <template for:each={projectData.milestones} for:item="milestoneWrapper">
+                                <div key={milestoneWrapper.milestone.Id} class="slds-box slds-m-bottom_small">
+                                    <div class="slds-grid slds-gutters">
+                                        <div class="slds-col">
+                                            <h3 class="slds-text-heading_small">
+                                                {milestoneWrapper.milestone.Name}
+                                            </h3>
+                                        </div>
+                                        <div class="slds-col slds-text-align_right">
+                                            <lightning-badge label={milestoneWrapper.milestone.Status__c}></lightning-badge>
+                                        </div>
+                                    </div>
+                                    <div class="slds-m-top_small">
+                                        <lightning-progress-bar 
+                                            value={milestoneWrapper.milestone.Percent_Complete__c} 
+                                            size="medium">
+                                        </lightning-progress-bar>
+                                        <div class="slds-text-align_center slds-m-top_xx-small">
+                                            {milestoneWrapper.milestone.Percent_Complete__c}% Complete
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Add Todo Button -->
+                                    <div class="slds-m-top_small">
+                                        <lightning-button 
+                                            label="Add Todo" 
+                                            data-milestone-id={milestoneWrapper.milestone.Id}
+                                            onclick={showAddTodoForm} 
+                                            variant="neutral">
+                                        </lightning-button>
+                                    </div>
+                                    
+                                    <!-- Add Todo Form -->
+                                   
+                                        <div class="slds-box slds-m-top_small">
+                                            <lightning-input 
+                                                label="Todo Name" 
+                                                value={newTodo.name} 
+                                                onchange={handleTodoNameChange}>
+                                            </lightning-input>
+                                            <div class="slds-m-top_small">
+                                                <lightning-button 
+                                                    label="Create Todo" 
+                                                    variant="brand" 
+                                                    onclick={createTodo} 
+                                                    class="slds-m-right_small">
+                                                </lightning-button>
+                                                <lightning-button 
+                                                    label="Cancel" 
+                                                    onclick={hideAddTodoForm}>
+                                                </lightning-button>
+                                            </div>
+                                        </div>
+                                    
+                                    
+                                    <!-- Todo Items -->
+                                    
+                                        <div class="slds-m-top_small">
+                                            <h4 class="slds-text-heading_small slds-m-bottom_small">To-Do Items</h4>
+                                            <ul class="slds-has-dividers_bottom-space">
+                                                <template for:each={milestoneWrapper.todos} for:item="todo">
+                                                    <li key={todo.Id} class="slds-item">
+                                                        <div class="slds-grid slds-gutters slds-align_center">
+                                                            <div class="slds-col slds-size_1-of-12">
+                                                                <lightning-input 
+                                                                    type="checkbox" 
+                                                                    checked={isTodoComplete}
+                                                                    data-todo-id={todo.Id}
+                                                                    onchange={handleTodoStatusChange}>
+                                                                </lightning-input>
+                                                            </div>
+                                                            <div class="slds-col slds-size_9-of-12">
+                                                                <span class={getTodoClass}>{todo.Name}</span>
+                                                            </div>
+                                                            <div class="slds-col slds-size_2-of-12 slds-text-align_right">
+                                                                <lightning-badge label={todo.Status__c}></lightning-badge>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </template>
+            
+            <template if:true={error}>
+                <div class="slds-text-color_error slds-m-top_small">
+                    {error}
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>
