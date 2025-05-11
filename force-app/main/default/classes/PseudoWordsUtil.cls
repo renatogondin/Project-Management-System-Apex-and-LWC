@@ -12,6 +12,7 @@ public with sharing class PseudoWordsUtil {
         }
 
         for(String word : process){
+            
             String firstLetter;
             String lastLetter;
             List<String> characters = word.split('');
