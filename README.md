@@ -1,3 +1,31 @@
+For this Project, object structure:
+
+Project__c
+
+Name (Text)
+Owner__c (Lookup -> User)
+Status__c (Formulat)
+Percent_Complete__c (Number)
+
+
+
+Milestone__c
+
+Name (Text)
+Project__c (Master-Detail -> Project__c)
+Status__c (Formula)
+Percent_Complete__c (Number)
+
+
+Todo__c
+
+Name (Text)
+Milestone__c (Master-Detail -> Milestone__c)
+Status__c (Picklist, values-> 'Not Started', 'In Progress', 'Complete')
+
+
+
+
 # Salesforce DX Project: Next Steps
 
 Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
